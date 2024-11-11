@@ -5,35 +5,31 @@ from joblib import Parallel, delayed
 from scipy.stats import norm
 
 class vanilla_pricer():
-	def __init__(self,day_count_name=None,steps=None,rng=None,numPaths=None,seed=123):
-		print('\ninitializing vanilla pricer')
+	def __init__(self,day_count_name=None,steps=None,rng=None,numPaths=None,seed=1312):
+		
 		if day_count_name == None:
 			self.day_count_name = 'Actual365Fixed'
-			print(ql.Actual365Fixed())
+
 		elif day_count_name == 'Thirty360.USA':
 			self.day_count_name = 'Thirty360.USA'
-			print(ql.Thirty360(ql.Thirty360.USA))
 		else:
 			raise(f"{day_count_name} not supported")
+		
+		self.steps = steps
 		if steps == None:
-			self.steps = 2
-		else:
-			self.steps = steps
+			self.steps = 10
+
+		self.rng = rng
 		if rng == None:
 			self.rng = "pseudorandom" # could use "lowdiscrepancy"
-		else:
-			self.rng = rng
+
+		self.numPaths = numPaths
 		if numPaths == None:
 			self.numPaths = 100000
-		else:
-			self.numPaths = numPaths
+		
+		self.seed = seed
 		if seed == None:
 			self.seed = 0
-			print()
-		else:
-			self.seed = seed
-			print(f"seed: {self.seed}\n")
-
 
 	def day_count(self):
 		if self.day_count_name == 'Actual365Fixed':
