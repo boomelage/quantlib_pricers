@@ -62,7 +62,7 @@ class barrier_option_pricer():
 		barrierOption.setPricingEngine(engine)
 
 		try:
-			return max(barrierOption.NPV(),0)
+			return min(max(barrierOption.NPV(),0),s)
 		except Exception as e:
 			print(e)
 			return np.nan
