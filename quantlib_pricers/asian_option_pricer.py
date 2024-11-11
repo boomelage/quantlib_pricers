@@ -6,19 +6,14 @@ from joblib import Parallel, delayed
 
 class asian_option_pricer():
     def __init__(self,seed=123):
-        print('\ninitializing Asian option pricer')
-        print(str(ql.Actual365Fixed()))
+        self.seed = seed
         if seed == None:
             self.seed = 0
-            print()
-        else:
-            self.seed = seed
-            print(f"seed: {self.seed}\n")
-
         self.rng = "pseudorandom" # could use "lowdiscrepancy"
         self.numPaths = 100000
+
     def day_count(self):
-        return ql.Actual365Fixed()
+        return 
 
     def asian_option_price(self,
         s,k,r,g,w,
@@ -41,8 +36,8 @@ class asian_option_pricer():
         fixing_periods = [ql.Period(int(p),ql.Days) for p in periods]
         fixing_dates = [calculation_date + p for p in fixing_periods]
         expiration_date = calculation_date + fixing_periods[-1]
-        riskFreeTS = ql.YieldTermStructureHandle(ql.FlatForward(calculation_date,float(r),self.day_count()))
-        dividendTS = ql.YieldTermStructureHandle(ql.FlatForward(calculation_date,float(g),self.day_count()))
+        riskFreeTS = ql.YieldTermStructureHandle(ql.FlatForward(calculation_date,float(r),ql.Actual365Fixed()))
+        dividendTS = ql.YieldTermStructureHandle(ql.FlatForward(calculation_date,float(g),ql.Actual365Fixed()))
 
         hestonProcess = ql.HestonProcess(riskFreeTS, dividendTS, ql.QuoteHandle(ql.SimpleQuote(s)), v0, kappa, theta, eta, rho)
         hestonModel = ql.HestonModel(hestonProcess)
