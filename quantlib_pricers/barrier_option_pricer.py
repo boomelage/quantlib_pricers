@@ -3,9 +3,18 @@ import numpy as np
 import QuantLib as ql
 from joblib import Parallel, delayed
 
-class barrier_option_pricer():
+class barrier_option_pricer(calculation_date=None,day_count=None):
 	def __init__(self):
-		print('barrier option pricer initialized')
+		print('initializing barrier option pricer')
+		self.calculation_date = calculation_date
+		self.day_count = day_count
+		if calculation_date == None:
+			self.calculation_date == ql.Date.todaysDate()
+		if day_count == None:
+			self.day_count = ql.Actual365Fixed()
+		print(self.calculation_date)
+		print(self.day_count)
+		
 
 	def barrier_price(self,
 	        s,k,t,r,g,w,
