@@ -41,7 +41,7 @@ class barrier_option_pricer():
 		elif barrier_type_name == 'DownIn':
 			barrierType = ql.Barrier.DownIn
 		else:
-			raise KeyError('barrier flag error')
+			raise KeyError(f'barrier flag error for: {barrier_type_name}')
 
 
 		heston_process = ql.HestonProcess(
