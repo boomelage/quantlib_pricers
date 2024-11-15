@@ -69,22 +69,26 @@ class barrier_option_pricer():
 
 
 	def row_barrier_price(self,row):
-		return self.barrier_price(
-	        row['spot_price'],
-	        row['strike_price'],
-	        row['days_to_maturity'],
-	        row['risk_free_rate'],
-	        row['dividend_rate'],
-	        row['w'],
-	        row['barrier_type_name'],
-	        row['barrier'],
-	        row['rebate'],
-	        row['kappa'],
-	        row['theta'],
-	        row['rho'],
-	        row['eta'],
-	        row['v0']
-			)
+		try:
+			return self.barrier_price(
+		        row['spot_price'],
+		        row['strike_price'],
+		        row['days_to_maturity'],
+		        row['risk_free_rate'],
+		        row['dividend_rate'],
+		        row['w'],
+		        row['barrier_type_name'],
+		        row['barrier'],
+		        row['rebate'],
+		        row['kappa'],
+		        row['theta'],
+		        row['rho'],
+		        row['eta'],
+		        row['v0']
+						)
+		except Exception as e:
+			print(f"error with row: {row}")
+			return np.nan
 
 	def df_barrier_price(self, df):
 	    max_jobs = os.cpu_count() // 4
