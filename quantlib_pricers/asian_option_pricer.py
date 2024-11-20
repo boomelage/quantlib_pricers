@@ -1,6 +1,7 @@
 import os
 import numpy as np
 import QuantLib as ql
+from time import time
 from joblib import Parallel, delayed
 
 
@@ -67,22 +68,29 @@ class asian_option_pricer():
             return arithmetic_price
 
     def row_asian_option_price(self,row):
-        return  self.asian_option_price(
-            row['spot_price'],
-            row['strike_price'],
-            row['risk_free_rate'],
-            row['dividend_rate'],
-            row['w'],
-            row['averaging_type'],
-            row['fixing_frequency'],
-            row['n_fixings'],
-            row['past_fixings'],
-            row['kappa'],
-            row['theta'],
-            row['rho'],
-            row['eta'],
-            row['v0']
-        )
+        try:
+            tic = time()
+            asian_price = self.asian_option_price(
+                row['spot_price'],
+                row['strike_price'],
+                row['risk_free_rate'],
+                row['dividend_rate'],
+                row['w'],
+                row['averaging_type'],
+                row['fixing_frequency'],
+                row['n_fixings'],
+                row['past_fixings'],
+                row['kappa'],
+                row['theta'],
+                row['rho'],
+                row['eta'],
+                row['v0']
+            )
+            asian_cpu = time() - tic
+            return {'asian_price':asian_price,'asian_cpu':asian_cpu}
+        except Exception as e:
+            print(f"Error with row: {row}\nException: {e}")
+            return {'asian_price':np.nan,'asian_cpu':np.nan}
 
     def df_asian_option_price(self, df):
         max_jobs = os.cpu_count() // 4

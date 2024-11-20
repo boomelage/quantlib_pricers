@@ -1,6 +1,5 @@
 import os
 import numpy as np
-import pandas as pd
 import QuantLib as ql
 from time import time
 from joblib import Parallel, delayed
@@ -98,41 +97,4 @@ class barrier_option_pricer():
 	def df_barrier_price(self, df):
 		max_jobs = os.cpu_count() // 4
 		max_jobs = max(1, max_jobs)
-
-		results = Parallel(n_jobs=max_jobs)(
-			delayed(self.row_barrier_price)(row) for _, row in df.iterrows()
-		)
-
-		results_df = pd.DataFrame(results, index=df.index)
-		return pd.concat([df, results_df], axis=1)
-
-
-
-	# def row_barrier_price(self,row):
-	# 	try:
-	# 		tic = time()
-	# 		row['barrier_price'] self.barrier_price(
-	# 	        row['spot_price'],
-	# 	        row['strike_price'],
-	# 	        row['days_to_maturity'],
-	# 	        row['risk_free_rate'],
-	# 	        row['dividend_rate'],
-	# 	        row['w'],
-	# 	        row['barrier_type_name'],
-	# 	        row['barrier'],
-	# 	        row['rebate'],
-	# 	        row['kappa'],
-	# 	        row['theta'],
-	# 	        row['rho'],
-	# 	        row['eta'],
-	# 	        row['v0']
-	# 					)
-	# 		row['barrier_cpu'] = time() - tic
-	# 	except Exception as e:
-	# 		print(f"error with row: {row}")
-	# 		return np.nan
-
-	# def df_barrier_price(self, df):
-	#     max_jobs = os.cpu_count() // 4
-	#     max_jobs = max(1, max_jobs)
-	#     return Parallel(n_jobs=max_jobs)(delayed(self.row_barrier_price)(row) for _, row in df.iterrows())
+		return Parallel(n_jobs=max_jobs)(delayed(self.row_barrier_price)(row) for _, row in df.iterrows())
