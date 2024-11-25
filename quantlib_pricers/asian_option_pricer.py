@@ -56,7 +56,7 @@ class asian_option_pricer():
             geometric_price = float(discreteGeometricAsianOption.NPV())
             return geometric_price
             
-        else:
+        elif averaging_type == 'arithmetic':
             arithmetic_engine = ql.MCDiscreteArithmeticAPHestonEngine(hestonProcess, self.rng, requiredSamples=self.numPaths,seed=self.seed)
             arithmeticAverage = ql.Average().Arithmetic
             arithmeticRunningAccumulator = s
@@ -66,6 +66,8 @@ class asian_option_pricer():
             discreteArithmeticAsianOption.setPricingEngine(arithmetic_engine)
             arithmetic_price = float(discreteArithmeticAsianOption.NPV())
             return arithmetic_price
+        else:
+            return np.nan
 
     def row_asian_option_price(self,row):
         try:
